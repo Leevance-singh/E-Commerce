@@ -1,0 +1,7 @@
+In order to execute this code , you first need to install these npm packages seperately :
+
+Express
+mongoose
+Jsonwebtoken
+Node-session
+cookie-parser
