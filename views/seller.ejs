@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller - Manage Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+        }
+        input, textarea {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .product-list {
+            margin-top: 20px;
+        }
+        .product-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .edit-button, .delete-button {
+            background-color: #008CBA; /* Blue */
+            margin-right: 10px;
+        }
+        .edit-button:hover, .delete-button:hover {
+            background-color: #007B9E;
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Products</h1>      
+
+<% products.forEach(product => { %>
+    <form action="/seller/edit/<%= product._id %>" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="productId" value="<%= product._id %>">
+        <label for="name">Product Name</label>
+        <input type="text" id="name" name="name" value="<%= product.product_name %>" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4" required><%= product.description %></textarea>
+
+        <label for="price">Price</label>
+        <input type="text" id="price" name="price" value="<%= product.price %>" required>
+
+        <label for="stock">Stock Quantity</label>
+        <input type="number" id="stock" name="stock" value="<%= product.stock %>" required>
+
+        <label for="image">Product Image</label>
+        <input type="file" id="image" name="image" accept="image/*">
+
+        <button type="submit" class="edit-button">Update</button>
+    </form>
+<% }) %>
+
+    
+
+    <div class="product-list">
+        <h2>Your Posted Products</h2>
+        <% if (!products || products.length === 0) { %>
+            <p>No products posted yet.</p>
+        <% } else { %>
+            <% products.forEach(product => { %>
+                <div class="product-item">
+                    <h3><%= product.product_name %></h3>
+                    <img src="<%= product.image %>" alt="Product image" style="width:100px;height:100px;">
+                    <p>Description: <%= product.description %></p>
+                    <p>Price: $<%= product.price %></p>
+                    <p>Stock: <%= product.stock %></p>
+                    
+                    <!-- Button to open the modal -->
+                    <button class="edit-button" onclick="openEditModal('<%= product._id %>', '<%= product.product_name %>', '<%= product.description %>', '<%= product.price %>', <%= product.stock %>, '<%= product.image %>')">Edit</button>
+
+                    <form action="/seller/delete/<%= product._id %>" method="POST" style="display:inline;">
+                        <button type="submit" class="delete-button">Delete</button>
+                    </form>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+
+    <!-- The Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Product</h2>
+            <form id="editProductForm" action="/seller/edit" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="editProductId" name="productId">
+                
+                <label for="editName">Product Name</label>
+                <input type="text" id="editName" name="name" required>
+
+                <label for="editDescription">Description</label>
+                <textarea id="editDescription" name="description" rows="4" required></textarea>
+
+                <label for="editPrice">Price</label>
+                <input type="text" id="editPrice" name="price" required>
+
+                <label for="editStock">Stock Quantity</label>
+                <input type="number" id="editStock" name="stock" required>
+
+                <label for="editImage">Product Image</label>
+                <input type="file" id="editImage" name="image" accept="image/*">
+
+                <button type="submit">Update Product</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal(productId, productName, productDescription, productPrice, productStock, productImage) {
+            document.getElementById("editProductId").value = productId;
+            document.getElementById("editName").value = productName;
+            document.getElementById("editDescription").value = productDescription;
+            document.getElementById("editPrice").value = productPrice;
+            document.getElementById("editStock").value = productStock;
+            // You may want to handle displaying the current image, if necessary
+
+            document.getElementById("editModal").style.display = "block";
+        }
+
+        function closeEditModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+        // Close the modal when the user clicks outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById("editModal");
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        }
+    </script>
+</body>
+</html>

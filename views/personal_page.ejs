@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Info</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #624E88;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Body styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            padding-top: 70px; /* To account for the fixed navbar */
+        }
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Heading styles */
+        h2 {
+            color: #4a4e69;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #22223b;
+            margin-bottom: 15px;
+        }
+
+        /* Link styles */
+        a {
+            color: #9a8c98;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #4a4e69;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Goofy Store</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/personal">Me!</a></li>
+            <li><a href="/about">About Us</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <h2>This is You!</h2>
+        <h3>Account Holder name: <%= personal_info.name %></h3>
+        <h3>Email associated with your account: <%= personal_info.email %></h3>
+
+        <form action="/logout" method="post">
+            <button type="submit" >Logout</button>
+        </form>
+
+        <form action="/changePass" method="get" >
+            <button type="submit" >Change Password</button>
+        </form>
+        
+    </div>
+</body>
+</html>

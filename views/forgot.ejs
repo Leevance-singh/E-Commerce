@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #624E88;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .navbar ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    .navbar li {
+        margin: 0 15px;
+    }
+
+    .navbar li a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .navbar li a:hover {
+        text-decoration: underline;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        background-color: #f0f4f8;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; 
+        height: 100vh;
+        padding: 20px;
+        padding-top: 70px;
+    }
+
+    #products_shelf {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .products {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin: 10px 0;
+        padding: 15px;
+        text-align: center;
+        width: 90%;
+    }
+
+    .products img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    button {
+        margin-top: 10px;
+        background-color: #624E88;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #7c6b9a;
+    }
+
+
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        color: #555;
+    }
+    h2 {
+        color: #4a4e69;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        color: #22223b;
+        margin-bottom: 15px;
+    }
+    a {
+        color: #9a8c98;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #4a4e69;
+    }
+    </style>
+</head>
+
+<body> 
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Goofy Store</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/personal">Me!</a></li>
+            <li><a href="/about">About Us</a></li>
+        </ul>
+    </div>
+<div class="container">
+    <h2>Forgot Password? Enter your credentials to reset your password:</h2>
+
+<div id="upperdata">
+    <form action="/forgot" method="post" >
+        <input type="email" name="email" placeholder="Email" required>
+        <button type="submit">Get OTP</button>
+    </form>
+</div>
+
+    <% if (!locals.otpSent){ %>
+        <h2>Enter the OTP sent to your email to reset your password:</h2>
+        <form action="/reset-password" method="post">
+            <input type="hidden" name="email" value="<%= email %>">
+            <input type="text" name="otp" placeholder="Enter OTP" required>
+            <input type="password" name="newPassword" placeholder="New Password" required>
+            <button type="submit">Reset Password</button>
+        </form>
+    <% } %>
+</div>
+
+
+</body>
+</html>

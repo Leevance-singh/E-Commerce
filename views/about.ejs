@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Goofy Store</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #624E88;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Body styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 70px; /* To account for the fixed navbar */
+        }
+
+        /* About container */
+        .about-container {
+            max-width: 800px;
+            width: 90%;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Heading styles */
+        h1 {
+            color: #4a4e69;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #22223b;
+            margin-bottom: 15px;
+        }
+
+        /* Paragraph styles */
+        p { 
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        /* Footer styles */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+            padding: 20px 0;
+        }
+
+        /* Link styles */
+        a {
+            color: #9a8c98;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #4a4e69;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Goofy Store</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/personal">Me!</a></li>
+            <li><a href="/about">About Us</a></li>
+        </ul>
+    </div> 
+
+    <div class="about-container">
+        <h1>About Us</h1>
+        <h2>Welcome to Goofy Store!</h2>
+        <p>At Goofy Store, we believe in providing the best products at the best prices. Our mission is to bring joy and convenience to your shopping experience.</p>
+        <p>We carefully curate our collection to ensure quality and style. Whether you're looking for the latest trends or classic essentials, we have something for everyone.</p>
+        <p>Thank you for choosing us! We are excited to serve you.</p>
+        <p>For inquiries, please <a href="/contact">contact us</a>.</p>
+    </div>
+
+    <footer>
+        <p>Copyright © (All Rights Reserved under our policy )</p>
+    </footer>
+</body>
+</html>

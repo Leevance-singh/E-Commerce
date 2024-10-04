@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #624E88;
+            height: 50px;
+            display: flex;
+            justify-content: center; /* Center navbar horizontally */
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar li a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            flex: 1;
+            padding: 60px 20px; 
+        }
+
+        footer {
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #products_shelf {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* Creates five equal columns */
+            gap: 20px; /* Adds space between items */
+            padding: 20px;
+        }
+
+        .products {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .products img {
+            max-width: 40%;
+            max-height: 40%;
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Goofy Store</a></li>
+            <li><a href="/login">Login</a></li>
+  
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/personal">Me!</a></li>
+        </ul>
+    </div>
+    <h1>Hi there i'm sam tucker from samsung and you may have heard recently :</h1>
+    <form action="/logout" method="post">
+        <button type="submit" name="submit" id="sub">Log Out</button>
+    </form>
+</body>
+</html>

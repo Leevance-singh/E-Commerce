@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Make sure the body takes up the full viewport height */
+        background-color: #f0f0f0; /* Light background color for contrast */
+    }
+
+    .navbar {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background-color: #624E88;
+        height: 50px;
+        display: flex;
+        justify-content: center; /* Center navbar horizontally */
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .navbar ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    .navbar li {
+        margin: 0 15px;
+    }
+
+    .navbar li a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .navbar li a:hover {
+        text-decoration: underline;
+    }
+
+    .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 300px;
+        text-align: center;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #624E88;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        margin-top: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #7c6b9a;
+    }
+
+    p {
+        margin-top: 20px;
+        color: #555;
+    }
+
+    a {
+        color: #624E88;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    /* Styling for the "Forgot Password" button */
+    form[action="/forgot"] button {
+        background-color: #f0f0f0;
+        color: #333;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 100%;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    form[action="/forgot"] button:hover {
+        background-color: #e0e0e0;
+    }
+</style>
+</head>
+<body>
+    <!-- <h1>This is new heading after adding file to git</h1> -->
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Goofy Store</a></li> 
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/personal">Me!</a></li>
+            <li><a href="/about">About Us</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <h2>Log In</h2>
+        
+        <!-- Display the error message if it exists --> 
+        <% if (typeof message !== 'undefined' && message) { %>
+            <h3 style="color: red;"><%= message %></h3>
+        <% } %>
+        
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" id="password_imp" required>
+        
+            <label for="show_hide_password" style="display: inline-block; margin-right:0;">Show password:</label>
+            <input type="checkbox" onclick="Toggle()" style="display: inline; width:13px;" id="show_hide_password">
+        
+            <button type="submit">Log In</button>
+        </form>
+        
+        <form action="/forgot" method="get"> 
+            <button type="submit" style="margin-top: 5px;">Forgot Password</button>
+        </form>
+        
+        <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+    </div>
+
+    <script>
+        // Change the type of input to password or text
+        function Toggle() {
+            let temp = document.getElementById("password_imp");
+            if (temp.type === "password") {
+                temp.type = "text";
+            } else {
+                temp.type = "password";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 70px 20px 20px; /* Added top padding for the fixed navbar */
+            display: flex; /* Center the body content */
+            justify-content: center; /* Centers the content horizontally */
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #624E88;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .navbar li {
+            margin: 0 15px;
+        }
+        .navbar li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .navbar li a:hover {
+            text-decoration: underline;
+        }
+        .cart-container {
+            display: flex;
+            justify-content: center; /* Center the content inside the cart container */
+            margin-top: 20px;
+            max-width: 1200px; /* Set a maximum width */
+            width: 100%; /* Allow full width up to the maximum */
+            gap: 20px; /* Space between cart items and summary */
+        }
+        .cart-items {
+            width: 70%;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .product-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+        .cart-summary {
+            width: 25%;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the content in the summary */
+        }
+        .checkout-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .checkout-button:hover {
+            background-color: #45a049;
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+    </style></head>
+
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Goofy Store</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/personal">Me!</a></li>
+            <li><a href="/about">About Us</a></li>
+        </ul>
+    </div> 
+
+    <div class="cart-container">
+        <!-- Cart Items Section --> 
+        <div class="cart-items">
+            <h2>Your Cart Items</h2>
+
+            <% if (cartItems.length === 0) { %>
+                <p>Your cart is empty.</p>
+            <% } else { %> 
+                <% cartItems.forEach(item => { %>
+                    <div id="cart-item-<%= item.product_id %>" class="cart-item">
+                        <div>
+                            <img class="product-image" src="<%= item.image %>" alt="Image couldn't load lil bro">
+                        </div>    
+
+                        <div>
+                            <p><strong><%= item.name %></strong></p>
+                            <p>Price: $<%= item.price %></p>
+                            <p>
+                                Quantity: 
+                                <button onclick="updateCart('<%= item.product_id %>', 'decrease')">-</button>
+                                <span id="quantity-<%= item.product_id %>"><%= item.stock %></span>
+                                <button onclick="updateCart('<%= item.product_id %>', 'increase')">+</button>
+                            </p>
+                        </div>
+                    
+                        <div>
+                            <p id="total-<%= item.product_id %>">Total: $<%= item.totalForItem %></p>
+                        </div>
+                    </div>
+                    
+                <% }); %>
+                
+                <!-- Checkout Button -->
+                <div class="cart-summary">
+                    <p id="totalPrice">Total Price: $<%= totalPrice %></p>
+                    <form action="/checkout" method="GET">
+                        <button type="submit" class="checkout-button">Checkout</button>
+                    </form>
+                </div>
+            <% } %>
+            
+            <script>
+                function updateCart(productId, action) 
+                {
+                    fetch('/cart/update',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ product_id: productId, action: action }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const quantityElement = document.getElementById(`quantity-${productId}`);
+                            const totalElement = document.getElementById(`total-${productId}`);
+                            const cartSummaryElement = document.getElementById('totalPrice');
+            
+                            if (data.removed) {
+                                document.getElementById(`cart-item-${productId}`).remove();
+                            } else {
+                                quantityElement.innerText = data.newQuantity;
+                                totalElement.innerText = `Total: $${data.newTotalForItem.toFixed(2)}`;
+                                cartSummaryElement.innerText = `Total Price: $${data.newTotalPrice.toFixed(2)}`;
+                            }
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            </script>          
+        </div>
+    </div>
+
+</body>
+</html>

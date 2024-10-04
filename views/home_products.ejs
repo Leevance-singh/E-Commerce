@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swagat Hai Aapka</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            top: 0;
+            width: 100%;
+            background-color: #624E88;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar li a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            flex: 1;
+            padding: 60px 20px; 
+        }
+
+        footer {
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #products_shelf {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .products {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .products img {
+            max-width: 40%;
+            max-height: 40%;
+            height: auto;
+        }
+
+        #productModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modalContent {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%;  
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            max-height: 400px;  
+            overflow-y: auto;
+        }
+
+        #modalContent img {
+            width: 200px;  
+            height: 200px;  
+            object-fit: contain;  
+        }
+
+        #closeModal {
+            color: #aaa;
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+        }
+
+        #closeModal:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Goofy Store</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/personal">Me!</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/seller">Seller</a></li>
+        </ul> 
+    </div>
+
+    <div id="products_shelf">
+        <% products.forEach(product => { %>
+            <div class="products" id="<%=product._id%>">
+                <img src="<%= product.image %>" alt="Can't Load Product Image">
+                <p><%= product.product_name %></p>
+                <p>₹<%= product.price %></p>
+                <button class="add-to-cart-button">Add To Cart</button>
+                <button class="view-description-button">View Description</button>
+            </div>
+        <% }) %>
+    </div>
+    
+    <button id="load_more">Load More</button>
+
+    <div id="productModal">
+        <div id="modalContent">
+            <span id="closeModal">&times;</span>
+            <h2 id="modalProductName"></h2>
+            <img id="modalProductImage" src="" alt="Product Image">
+            <p id="modalProductDescription"></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Copyright © (All Rights Reserved under policy 7983518)</p>
+    </footer>
+
+    <script>
+        let currentPage = 1;
+        const addedProductIds = [];
+
+        function addCartEventListeners() {
+            const productElements = document.getElementsByClassName("products");
+            Array.from(productElements).forEach(element => {
+                const productId = element.id;
+
+                if (!addedProductIds.includes(productId)) { 
+                    let addToCartButton = element.querySelector(".add-to-cart-button");
+
+                    addToCartButton.addEventListener("click", () => {
+                        fetch('/cart-changes', {
+                            method: 'POST',
+                            headers:{
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ product_id: productId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data) {
+                                alert(JSON.stringify(data.data));
+                            } else {
+                                alert('Error adding product to cart!');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert(error);
+                        });
+                    });
+
+                    addedProductIds.push(productId);
+                }
+
+                let viewDescriptionButton = element.querySelector(".view-description-button");
+
+                viewDescriptionButton.addEventListener("click", async () => {
+                    const productName = element.querySelector("p").innerText;
+                    const productImage = element.querySelector("img").src;
+
+                    try {
+                        const response = await fetch(`/product/description/${productId}`);
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            document.getElementById("modalProductName").innerText = productName;
+                            document.getElementById("modalProductImage").src = productImage;
+                            document.getElementById("modalProductDescription").innerText = data.description;
+
+                            document.getElementById("productModal").style.display = "flex";
+                        } else {
+                            console.error(data.message);
+                        }
+                    } catch (error) {
+                        console.error("Error fetching product description:", error);
+                    }
+                });
+            });
+        }
+
+        document.getElementById("closeModal").onclick = function() {
+            document.getElementById("productModal").style.display = "none";
+        }
+
+        document.getElementById("load_more").addEventListener("click", function() {
+            currentPage++;
+
+            fetch(`/load-more-products?page=${currentPage}`)
+                .then(response => response.json())
+                .then(products => {
+                    if (products.length === 0) {
+                        document.getElementById("load_more").style.display = "none";
+                        return ;
+                    }
+
+                    const productShelf = document.getElementById("products_shelf");
+
+                    products.forEach(product => {
+                        const productDiv = document.createElement("div");
+                        productDiv.classList.add("products");
+                        productDiv.id = product._id;
+                        productDiv.innerHTML = `
+                            <img src="${product.image}" alt="Can't Load Product Image">
+                            <p>${product.product_name}</p>
+                            <p>₹${product.price}</p>
+                            <button class="add-to-cart-button">Add To Cart</button>
+                            <button class="view-description-button">View Description</button>
+                        `;
+                        productShelf.appendChild(productDiv);
+                    });
+
+                    addCartEventListeners();
+                })
+                .catch(error => {
+                    console.error("Error loading more products:", error);
+                });
+        });
+
+        addCartEventListeners();
+    </script>
+</body>
+</html>

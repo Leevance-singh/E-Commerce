@@ -1,0 +1,82 @@
+/* Apply box-sizing to all elements */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
+    overflow-x: hidden; /* Hide horizontal overflow */
+}
+
+.navbar {
+    top: 0;
+    width: 100%;
+    background-color: #624E88;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar li {
+    margin: 0 15px;
+}
+
+.navbar li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.navbar li a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    flex: 1;
+    padding: 60px 20px; 
+}
+
+footer {
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+#products_shelf {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust column sizing */
+    gap: 20px; /* Adds space between items */
+    padding: 20px;
+    max-width: 100%; /* Ensure it doesn't exceed the viewport width */
+    overflow-x: auto; /* Add horizontal scrolling if needed */
+}
+
+.products {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.products img {
+    max-width: 100%; /* Ensure image width doesn't exceed the container */
+    height: auto; /* Maintain aspect ratio */
+}
